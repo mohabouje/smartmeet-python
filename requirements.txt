@@ -1,0 +1,8 @@
+beeprint
+numpy
+scipy
+singleton_decorator
+setuptools
+pyaudio
+soundfile
+speechpy
