@@ -23,7 +23,7 @@ class Detrend(Element):
     def process(self, data, extra=None):
         """ Removes the mean value or linear trend from a N-dimensional array.
 
-        :param data: An array containing the data to be filtered
+        :param data: An array containing the data
         :param extra: Dictionary storing any extra information previously computed.
         :return: An array the same size as input containing the median filtered result.
         """

@@ -26,7 +26,7 @@ class Resample(Element):
     def process(self, data, extra=None):
         """ Resample the input data using polyphase filtering.
 
-        :param data: An array containing the data to be filtered
+        :param data: An array containing the data
         :param extra: Dictionary storing any extra information previously computed.
         :return: An array containing the resampled signal.
         """

@@ -50,7 +50,7 @@ class Smooth(Element):
 
         Apply a smoothing filter to the input array using a local window-size given by `kernel_size`
 
-        :param data: An array containing the data to be filtered
+        :param data: An array containing the data
         :param extra: Dictionary storing any extra information previously computed.
         :return: An array the same size as input containing the filtered result.
         """
