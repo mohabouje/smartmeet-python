@@ -1,8 +1,8 @@
 from soundfile import SoundFile
-from smartmeet.core.element import Element
+from smartmeet.core.source import Source
 
 
-class Decoder(Element):
+class Decoder(Source):
     """
     This class is an interface to read data from an audio file
     """
@@ -43,11 +43,11 @@ class Decoder(Element):
         """
         return self.__instance.seek(frames=frames)
 
-    def process(self, data=None, extra=None):
+    def process(self):
         """ Returns the buffer read from the audio file
         :param data: An array containing the data
         :param extra: Dictionary storing any extra information previously computed.
         :return: Array storing the samples read from the file
         """
         return self.__instance.read(frames=self.__frames_per_buffer,
-                                    dtype='float32', always_2d=True), extra
+                                    dtype='float32', always_2d=True)

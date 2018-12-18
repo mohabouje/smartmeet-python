@@ -1,8 +1,8 @@
-from smartmeet.core.element import Element
+from smartmeet.core.filter import Filter
 from scipy import signal
 
 
-class Detrend(Element):
+class Detrend(Filter):
     """
     This class removes the mean value or linear trend from a N-dimensional array, usually for FFT processing.
 

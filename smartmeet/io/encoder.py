@@ -1,8 +1,8 @@
 from soundfile import SoundFile
-from smartmeet.core.element import Element
+from smartmeet.core.sink import Sink
 
 
-class Encoder(Element):
+class Encoder(Sink):
     """
     This class is an interface to write data into an audio file
     """
@@ -37,11 +37,8 @@ class Encoder(Element):
         """
         return self.__instance.seek(frames=frames)
 
-    def process(self, data=None, extra=None):
+    def process(self, data, extra):
         """ Writes the buffer of data into the audio file.
-        :param data: An array containing the data
-        :param extra: Dictionary storing any extra information previously computed.
         :return: An array the same size as the input
         """
         self.__instance.write(data=data)
-        return data, extra

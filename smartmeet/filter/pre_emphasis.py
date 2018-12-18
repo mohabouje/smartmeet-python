@@ -1,8 +1,8 @@
-from smartmeet.core.element import Element
+from smartmeet.core.filter import Filter
 from speechpy.processing import preemphasis
 
 
-class PreEmphasis(Element):
+class PreEmphasis(Filter):
     """
     This class perform a pre-emphasis filter on an N-dimensional array.
     """

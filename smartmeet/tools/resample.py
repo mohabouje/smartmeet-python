@@ -1,8 +1,7 @@
-from smartmeet.core.element import Element
+from smartmeet.core.filter import Filter
 from scipy import signal
 
-
-class Resample(Element):
+class Resample(Filter):
     """
     This class resamples N-dimensional array.
 

@@ -1,8 +1,8 @@
-from smartmeet.core.element import Element
+from smartmeet.core.filter import Filter
 from scipy import signal
 
 
-class RollingMedian(Element):
+class RollingMedian(Filter):
     """
     This class perform a median filter on an N-dimensional array.
     """

@@ -1,8 +1,8 @@
-from smartmeet.core.element import Element
+from smartmeet.core.filter import Filter
 from scipy import signal
 
 
-class Smooth(Element):
+class Smooth(Filter):
     """
     This class perform a smooth filter on an N-dimensional array.
 

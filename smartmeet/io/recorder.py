@@ -1,9 +1,9 @@
 from queue import Queue
 from pyaudio import PyAudio, paFloat32, paContinue
-from smartmeet.core.element import Element
+from smartmeet.core.source import Source
 
 
-class Recorder(Element):
+class Recorder(Source):
     """
     This class is an interface to pyAudio that performs the retrieval of recorded audio buffers
     from an input device.
@@ -70,16 +70,14 @@ class Recorder(Element):
         """ Returns the number of frames per channel"""
         return self.__frames_per_buffer
 
-    def process(self, data=None, extra=None):
+    def process(self):
         """ Returns the oldest recorded buffer
-        :param data: An array containing the data
-        :param extra: Dictionary storing any extra information previously computed.
         :return: Array containing the samples read from a file
         """
         if self.__queue.empty():
-            return None, extra
+            return None
 
-        return self.__queue.get(), extra
+        return self.__queue.get()
 
     def start(self):
         """ Starts the audio streaming """

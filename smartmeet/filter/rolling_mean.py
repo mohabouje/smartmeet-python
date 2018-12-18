@@ -1,8 +1,8 @@
 import numpy
-from smartmeet.core.element import Element
+from smartmeet.core.filter import Filter
 
 
-class RollingMean(Element):
+class RollingMean(Filter):
     """
     This class perform a mean filter on an N-dimensional array.
     """
