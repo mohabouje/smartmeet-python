@@ -1,0 +1,53 @@
+from soundfile import SoundFile
+from smartmeet.core.element import Element
+
+
+class Decoder(Element):
+    """
+    This class is an interface to read data from an audio file
+    """
+    def __init__(self, file_name: str, frames_per_buffer: int = None, name: str = ""):
+        """ Creates an instance of a Decoder source with the given configuration
+
+        :param file_name: Input file name
+        :param frames_per_buffer: Number of frames per buffer.
+        """
+        super().__init__(name)
+        self.__instance = SoundFile(file=file_name, mode='r')
+        self.__frames_per_buffer = frames_per_buffer if frames_per_buffer else self.sample_rate / 100
+
+    @property
+    def sample_rate(self) -> int:
+        """ Return the sampling rate in Hz. """
+        return self.__instance.samplerate
+
+    @property
+    def channels(self):
+        """ Return the number of channels. """
+        return self.__instance.channels
+
+    @property
+    def file_name(self):
+        """ Return the file name. """
+        return self.__instance.name
+
+    @property
+    def frames_per_buffer(self):
+        """ Returns the number of frames per channel"""
+        return self.__frames_per_buffer
+
+    def seek(self, frames):
+        """Set the read position.
+        :param frames : The frame index or offset to seek.
+        :returns The new absolute read/write position in frames
+        """
+        return self.__instance.seek(frames=frames)
+
+    def process(self, data=None, extra=None):
+        """ Returns the buffer read from the audio file
+        :param data: An array containing the data
+        :param extra: Dictionary storing any extra information previously computed.
+        :return: Array storing the samples read from the file
+        """
+        return self.__instance.read(frames=self.__frames_per_buffer,
+                                    dtype='float32', always_2d=True), extra
