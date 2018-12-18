@@ -1,11 +1,5 @@
-from smartmeet.core.profiller import Profiler
+from smartmeet.core.profiler import profile
 from abc import ABC, abstractmethod
-
-
-def profile(func):
-    def wrapper(self, *args, **kw):
-        Profiler.profile(label=self.name, func=func, args=args, kw=kw)
-    return wrapper
 
 
 class Element(ABC):
@@ -19,9 +13,9 @@ class Element(ABC):
      they only generate data.
 
     * Filter Elements: Filters and filter-like elements have both input and outputs pads. They operate on data that
-    they receive on their input (sink) pads, and will provide data on their output (source) pads.
+    they receive on their input (sink) pads, and will provide data on their output (io) pads.
 
-    By linking a source element with zero or more filter-like elements and finally a sink element, you set up a media
+    By linking a io element with zero or more filter-like elements and finally a sink element, you set up a media
     pipeline. Data will flow through the elements. This is the basic concept of media handling.
 
     """
@@ -47,7 +41,7 @@ class Element(ABC):
         return self.__name
 
     @abstractmethod
-    def process(self, data, extra):
+    def process(self, data, extra=None):
         """ Process the data
 
         This function process the data and returns the updated version. This function does not propagates the
@@ -57,7 +51,7 @@ class Element(ABC):
         :param extra: Dictionary with any extra information
         :return: The processed data and any extra useful information
         """
-        pass
+        return data, extra
 
     def reset(self):
         """ Resets the Element to the original state, invalidating any previous computation. """

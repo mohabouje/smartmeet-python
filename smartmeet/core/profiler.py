@@ -55,3 +55,9 @@ class Profiler:
         for profiler in sorted(self.__entries.items(), key=operator.itemgetter(1)):
             print("Label: %s \t Total: %f \t Average: %f \t Worst: %f \t Best: %f "
                   % (profiler.label, profiler.total, profiler.average, profiler.worst, profiler.best))
+
+
+def profile(func):
+    def wrapper(self, *args, **kw):
+        Profiler.profile(label=self.name, func=func, args=args, kw=kw)
+    return wrapper
