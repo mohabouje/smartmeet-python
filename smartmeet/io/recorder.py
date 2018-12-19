@@ -8,9 +8,8 @@ from smartmeet.core.source import Source
 
 
 class Recorder(Source):
-    """
-    This class is an interface to pyAudio that performs the retrieval of recorded audio buffers
-    from an input device.
+    """This class is an interface to pyAudio that performs the retrieval of
+    recorded audio buffers from an input device.
     """
 
     def __init__(self,
@@ -19,12 +18,14 @@ class Recorder(Source):
                  channels: int = 1,
                  device_name: str = "default",
                  name: str = ""):
-        """ Creates an instance of a Recorder source with the given configuration
+        """Creates an instance of a Recorder source with the given configuration
 
-        :param rate: Sampling rate in Hz
-        :param channels: Number of channels
-        :param device_name: Input device name
-        :param frames_per_buffer: Number of frames per buffer.
+        Args:
+            rate (int): Sampling rate in Hz
+            frames_per_buffer (int): Number of frames per buffer.
+            channels (int): Number of channels
+            device_name (str): Input device name
+            name (str):
         """
         super().__init__(name)
         self.__queue = Queue()
@@ -57,65 +58,75 @@ class Recorder(Source):
             input=True)
 
     def __decode(self, data):
-        """
-        Convert a byte stream into a 2D numpy array with
-        shape (chunk_size, channels)
+        """Convert a byte stream into a 2D numpy array with shape (chunk_size,
+        channels)
 
-        Samples are interleaved, so for a stereo stream with left channel
-        of [L0, L1, L2, ...] and right channel of [R0, R1, R2, ...], the output
-        is ordered as [L0, R0, L1, R1, ...]
+        Samples are interleaved, so for a stereo stream with left channel of
+        [L0, L1, L2, ...] and right channel of [R0, R1, R2, ...], the output is
+        ordered as [L0, R0, L1, R1, ...]
+
+        Args:
+            data:
         """
         result = numpy.fromstring(string=data, dtype=numpy.float32)
         return numpy.reshape(result, (self.frames_per_buffer, self.channels))
 
     def __audio_callback(self, in_data, frame_count, time_info, status):
+        """
+        Args:
+            in_data:
+            frame_count:
+            time_info:
+            status:
+        """
         self.__queue.put(self.__decode(data=in_data))
         self.__timestamp = time_info["current_time"]
         return None, paContinue
 
     @property
     def sample_rate(self) -> int:
-        """ Return the sampling rate in Hz. """
+        """Return the sampling rate in Hz."""
         return self.__rate
 
     @property
     def channels(self) -> int:
-        """ Return the number of channels. """
+        """Return the number of channels."""
         return self.__channels
 
     @property
     def device_name(self) -> str:
-        """ Return the device name. """
+        """Return the device name."""
         return self.__instance.get_device_info_by_index(self.__device_index)["name"]
 
     @property
     def frames_per_buffer(self) -> int:
-        """ Returns the number of frames per channel"""
+        """Returns the number of frames per channel"""
         return self.__frames_per_buffer
 
     def done(self) -> bool:
-        """ Checks if the stream is currently active """
+        """Checks if the stream is currently active"""
         return self.__stream.is_stopped()
 
     def start(self):
-        """ Starts the audio streaming """
+        """Starts the audio streaming"""
         self.__stream.start_stream()
 
     def stop(self):
-        """ Stops the audio streaming """
+        """Stops the audio streaming"""
         self.__stream.stop_stream()
 
     def timestamp(self) -> float:
-        """ Returns the streaming timestamp in seconds """
+        """Returns the streaming timestamp in seconds"""
         return self.__timestamp
 
     def process(self):
-        """ This functions returns the recorded data from the microphone
+        """This functions returns the recorded data from the microphone
 
-        If there is no data in the buffer, the function will wait until the next callback from
-        the sound card is done and return the recorded data.
+        If there is no data in the buffer, the function will wait until the
+        next callback from the sound card is done and return the recorded data.
 
-        :return: Array containing the samples read from a file
+        Returns:
+            Array containing the samples read from a file
         """
         while (self.__queue.empty()):
             time.sleep(self.frames_per_buffer / self.sample_rate)

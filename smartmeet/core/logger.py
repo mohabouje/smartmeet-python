@@ -10,6 +10,10 @@ class Logger:
         self.__loggers = dict()
 
     def __get_logger(self, logger_name) -> logging.Logger:
+        """
+        Args:
+            logger_name:
+        """
         if logger_name not in self.__loggers:
             logger = logging.getLogger(logger_name)
             logger.setLevel(self.__level)
@@ -17,15 +21,35 @@ class Logger:
         return self.__loggers[logger_name]
 
     def debug(self, msg: str, logger_name: str = "root"):
+        """
+        Args:
+            msg (str):
+            logger_name (str):
+        """
         self.__get_logger(logger_name).debug(msg)
 
     def error(self, msg: str, logger_name: str = "root"):
+        """
+        Args:
+            msg (str):
+            logger_name (str):
+        """
         self.__get_logger(logger_name).error(msg)
 
     def info(self, msg: str, logger_name: str = "root"):
+        """
+        Args:
+            msg (str):
+            logger_name (str):
+        """
         self.__get_logger(logger_name).info(msg)
 
     def warning(self, msg: str, logger_name: str = "root"):
+        """
+        Args:
+            msg (str):
+            logger_name (str):
+        """
         self.__get_logger(logger_name).warning(msg)
 
     @property
@@ -34,6 +58,10 @@ class Logger:
 
     @level.setter
     def level(self, level: int):
+        """
+        Args:
+            level (int):
+        """
         self.__level = level
         for logger in self.__loggers:
             logger.setLevel(level)

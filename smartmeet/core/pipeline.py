@@ -15,14 +15,18 @@ class Pipeline:
     """
 
     def __init__(self, name: str = "default"):
+        """
+
+        """
         self.__name = name
         self.__elements = []
 
     def add(self, element: Element):
         """ Appends filter f to sequence of filters in the pipeline.
+        Args:
+            element (Element): Element to add to the pipeline
         Note:
             The filter f must not already be in a pipeline.
-        :param element: Element to add to the pipeline
         """
 
         if not issubclass(type(element), Element):
@@ -41,7 +45,8 @@ class Pipeline:
 
     def run(self):
         """ Runs the pipeline until the end of the streaming and processing tasks.
-        :return: A boolean representing if the pipeline has been executed successfully.
+        Returns:
+            A boolean representing if the pipeline has been executed successfully.
         """
 
         if not self.__elements:
@@ -52,14 +57,17 @@ class Pipeline:
     @staticmethod
     def exec(source: Source):
         """ Runs the pipeline until the source elements stop the streaming.
+
         The pipeline will stop when the source elements stop the streaming and each subsequent filter has processed
         all items from its predecessor.
 
         Note:
             A pipeline can be run multiple times. It is safe to add stages between runs.
 
-        :param source: Source element which generate the raw data to be processed
-        :return: A boolean representing if the pipeline has been executed successfully.
+        Args:
+            source (Source): Source element which generate the raw data to be processed
+        Returns:
+            A boolean representing if the pipeline has been executed successfully.
         """
 
         if not issubclass(type(source), Source):
