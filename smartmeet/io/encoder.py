@@ -1,3 +1,4 @@
+import numpy
 from soundfile import SoundFile
 from smartmeet.core.sink import Sink
 
@@ -41,4 +42,4 @@ class Encoder(Sink):
         """ Writes the buffer of data into the audio file.
         :return: An array the same size as the input
         """
-        self.__instance.write(data=data)
+        self.__instance.write(data.flatten())

@@ -1,5 +1,5 @@
 from smartmeet.core.sink import Sink
-from smartmeet.core.profiler import profile
+from profilehooks import profile
 from abc import abstractmethod
 
 
@@ -38,8 +38,8 @@ class Filter(Sink):
 
         :param sink: Element to be linked
         """
-        if not issubclass(sink, Sink):
-            raise TypeError()
+        if not issubclass(type(sink), Sink):
+            raise TypeError("Only Sink objects can be linked")
         self.__sinks.append(sink)
 
     def unlink(self, sink):

@@ -36,6 +36,10 @@ class Decoder(Source):
         """ Returns the number of frames per channel"""
         return self.__frames_per_buffer
 
+    def done(self):
+        """ Checks if there still data to read from the audio file """
+        return self.__instance.tell() < self.__instance.frames
+
     def seek(self, frames):
         """Set the read position.
         :param frames : The frame index or offset to seek.

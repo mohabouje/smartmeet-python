@@ -1,6 +1,6 @@
 from smartmeet.core.element import Element
 from smartmeet.core.sink import Sink
-from smartmeet.core.profiler import profile
+from profilehooks import profile
 from abc import abstractmethod
 
 
@@ -30,6 +30,17 @@ class Source(Element):
         """
         pass
 
+    @abstractmethod
+    def done(self):
+        """ Checks if the source is generating data """
+        return
+
+    def start(self):
+        pass
+
+    def stop(self):
+        pass
+
     def link(self, sink):
         """ Links the given Element
 
@@ -38,8 +49,8 @@ class Source(Element):
 
         :param sink: Element to be linked
         """
-        if not issubclass(sink, Sink):
-            raise TypeError()
+        if not issubclass(type(sink), Sink):
+            raise TypeError("Only Sink objects can be linked")
         self.__sinks.append(sink)
 
     def unlink(self, sink):
@@ -61,5 +72,6 @@ class Source(Element):
         :param data: Input data, generally a numpy array storing audio samples
         :param extra: Dictionary with any extra information
         """
+
         data, extra = self.__run_processing()
         self.__propagate(data=data, extra=extra)

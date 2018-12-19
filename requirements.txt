@@ -1,8 +1,8 @@
-beeprint
-numpy
-scipy
-singleton_decorator
-setuptools
-pyaudio
-soundfile
-speechpy
+scipy==1.1.0
+speechpy==2.4
+numpy==1.15.4
+singleton_decorator==1.0.0
+SoundFile==0.10.2
+setuptools==40.6.2
+beeprint==2.4.7
+pyaudio==0.2.11

@@ -1,7 +1,6 @@
 from smartmeet.core.element import Element
 from abc import abstractmethod
-from smartmeet.core.profiler import profile
-
+from profilehooks import profile
 
 class Sink(Element):
 
@@ -11,7 +10,7 @@ class Sink(Element):
 
     @profile
     def __run_processing(self, data, extra=None):
-        return self.process(data, extra)
+        return self.process(data=data, extra=extra)
 
     @abstractmethod
     def process(self, data, extra):

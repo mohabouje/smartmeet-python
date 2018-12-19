@@ -1,5 +1,4 @@
-from smartmeet.core.profiler import profile
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class Element(ABC):
