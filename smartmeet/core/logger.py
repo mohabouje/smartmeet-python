@@ -1,13 +1,15 @@
 import logging
+
 from singleton_decorator import singleton
 
 
 @singleton
 class Logger:
+
     def __init__(self):
         self.__level = logging.DEBUG
         self.__loggers = dict()
-        
+
     def __get_logger(self, logger_name) -> logging.Logger:
         if logger_name not in self.__loggers:
             logger = logging.getLogger(logger_name)

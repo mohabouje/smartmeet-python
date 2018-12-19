@@ -1,22 +1,21 @@
+from abc import abstractmethod
+
+from profilehooks import profile
+
 from smartmeet.core.element import Element
 from smartmeet.core.sink import Sink
-from profilehooks import profile
-from abc import abstractmethod
 
 
 class Source(Element):
+    """
+    A source element holds an streaming that generates raw data for use by a pipeline, for example reading from disk
+    or from a sound card. Those components do not have a sink pad, so source elements do not accept data, they only
+    generate data.
+    """
 
     def __init__(self, name: str = ""):
         super().__init__(name)
         self.__sinks = []
-
-    @profile
-    def __run_processing(self):
-        return self.process()
-
-    def __propagate(self, data, extra=None):
-        for sink in self.__sinks:
-            sink.run(data, extra)
 
     @abstractmethod
     def process(self):
@@ -28,18 +27,22 @@ class Source(Element):
         :param extra: Dictionary with any extra information
         :return: The processed data and any extra useful information
         """
-        pass
 
     @abstractmethod
     def done(self):
         """ Checks if the source is generating data """
-        return
 
+    @abstractmethod
     def start(self):
-        pass
+        """ Starts the streaming """
 
+    @abstractmethod
     def stop(self):
-        pass
+        """ Stops the streaming """
+
+    @abstractmethod
+    def timestamp(self):
+        """ Return the streaming timestamp """
 
     def link(self, sink):
         """ Links the given Element
@@ -72,6 +75,13 @@ class Source(Element):
         :param data: Input data, generally a numpy array storing audio samples
         :param extra: Dictionary with any extra information
         """
-
         data, extra = self.__run_processing()
         self.__propagate(data=data, extra=extra)
+
+    @profile
+    def __run_processing(self):
+        return self.process()
+
+    def __propagate(self, data, extra):
+        for sink in self.__sinks:
+            sink.run(data, extra)

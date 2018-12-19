@@ -1,5 +1,6 @@
-from setuptools import setup, find_packages
 from os import path
+
+from setuptools import setup, find_packages
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -31,15 +32,13 @@ setup(
     keywords='audio, smart-speakers, vad, speech-recognition, speech-processing',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=requirements,
-    entry_points={ 
-        'console_scripts': [
-        ],
+    entry_points={
+        'console_scripts': [],
     },
-    project_urls={  
+    project_urls={
         'Bug Reports': '',
         'Funding': '',
         'Say Thanks!': '',
         'Source': '',
     },
 )
-

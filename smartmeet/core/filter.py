@@ -1,9 +1,16 @@
-from smartmeet.core.sink import Sink
-from profilehooks import profile
 from abc import abstractmethod
+
+from profilehooks import profile
+
+from smartmeet.core.sink import Sink
 
 
 class Filter(Sink):
+    """
+    Filters and filter-like elements have both input and outputs pads. hey operate on data that they receive on their
+    input (sink) pads, and will provide data on their output (source) pads.
+
+    """
 
     def __init__(self, name: str = ""):
         """ Creates an Element with the given alias
@@ -13,14 +20,6 @@ class Filter(Sink):
         super().__init__(name)
         self.__sinks = []
 
-    @profile
-    def __run_processing(self, data, extra=None):
-        return self.process(data, extra)
-
-    def __propagate(self, data, extra=None):
-        for sink in self.__sinks:
-            sink.run(data, extra)
-
     @abstractmethod
     def process(self, data, extra):
         """ Process a chunk of data
@@ -28,7 +27,6 @@ class Filter(Sink):
         :param data: Input data, generally a numpy array storing audio samples
         :param extra: Dictionary with any extra information
         """
-        pass
 
     def link(self, sink):
         """ Links the given Element
@@ -63,3 +61,11 @@ class Filter(Sink):
         """
         data, extra = self.__run_processing(data, extra)
         self.__propagate(data, extra)
+
+    @profile
+    def __run_processing(self, data, extra):
+        return self.process(data, extra)
+
+    def __propagate(self, data, extra):
+        for sink in self.__sinks:
+            sink.run(data, extra)

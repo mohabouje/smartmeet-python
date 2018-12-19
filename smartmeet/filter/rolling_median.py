@@ -1,11 +1,13 @@
-from smartmeet.core.filter import Filter
 from scipy import signal
+
+from smartmeet.core.filter import Filter
 
 
 class RollingMedian(Filter):
     """
     This class perform a median filter on an N-dimensional array.
     """
+
     def __init__(self, kernel_size: int, name: str = ""):
         """ Create a RollingMedian element.
 

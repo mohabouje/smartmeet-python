@@ -1,5 +1,6 @@
-from smartmeet.core.filter import Filter
 from scipy import signal
+
+from smartmeet.core.filter import Filter
 
 
 class Smooth(Filter):
@@ -30,6 +31,7 @@ class Smooth(Filter):
         'wrap'     | 6  7  8 | 1  2  3  4  5  6  7  8 | 1  2  3
 
     """
+
     def __init__(self, kernel_size: int, polyorder: int, mode='interp', name: str = ""):
         """ Create a RollingMedian element.
 
@@ -54,5 +56,5 @@ class Smooth(Filter):
         :param extra: Dictionary storing any extra information previously computed.
         :return: An array the same size as input containing the filtered result.
         """
-        return signal.savgol_filter(data, window_length=self.kernel_size,
-                                    polyorder=self.polyorder, mode=self.mode, axis=1), extra
+        return signal.savgol_filter(data, window_length=self.kernel_size, polyorder=self.polyorder, mode=self.mode,
+                                    axis=1), extra

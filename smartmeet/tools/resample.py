@@ -1,21 +1,24 @@
-from smartmeet.core.filter import Filter
 from scipy import signal
+
+from smartmeet.core.filter import Filter
+
 
 class Resample(Filter):
     """
     This class resamples N-dimensional array.
 
-    The input signal is upsampled by the factor `up`, a zero-phase low-pass
-    FIR filter is applied, and then it is downsampled by the factor `down`.
+    The input signal is up-sampled by the factor `up`, a zero-phase low-pass
+    FIR filter is applied, and then it is down-sampled by the factor `down`.
     The resulting sample rate is ``up / down`` times the original sample
     rate. Values beyond the boundary of the signal are assumed to be zero
     during the filtering step.
 
     """
-    def __init__(self,  up: int, down: int, name: str = ""):
+
+    def __init__(self, up: int, down: int, name: str = ""):
         """ Create a RollingMedian element.
 
-        :param up: The upsampling factor.
+        :param up: The up-sampling factor.
         :param down: The down sampling factor.
         """
         super().__init__(name)

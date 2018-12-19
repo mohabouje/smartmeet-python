@@ -1,5 +1,5 @@
-import numpy
 from soundfile import SoundFile
+
 from smartmeet.core.sink import Sink
 
 
@@ -7,6 +7,7 @@ class Encoder(Sink):
     """
     This class is an interface to write data into an audio file
     """
+
     def __init__(self, file_name: str, rate: int, channels: int, name: str = ""):
         """ Creates an instance of a Encoder source with the given configuration
         :param rate : The sample rate of the file in Hz.
@@ -14,7 +15,9 @@ class Encoder(Sink):
         :param file_name: Input file name
         """
         super().__init__(name)
-        self.__instance = SoundFile(file=file_name, mode='w', samplerate=rate, channels=channels)
+        self.__instance = SoundFile(
+                file=file_name, mode='w', samplerate=rate, channels=channels
+        )
 
     @property
     def sample_rate(self) -> int:

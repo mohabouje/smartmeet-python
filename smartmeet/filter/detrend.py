@@ -1,5 +1,6 @@
-from smartmeet.core.filter import Filter
 from scipy import signal
+
+from smartmeet.core.filter import Filter
 
 
 class Detrend(Filter):
@@ -9,7 +10,8 @@ class Detrend(Filter):
     The algorithm computes the least-squares fit of a straight line (or composite line for piecewise linear trends)
     to the data and subtracts the resulting function from the data.
     """
-    def __init__(self, ftype: str = "linear", name: str = ""):
+
+    def __init__(self, type: str = "linear", name: str = ""):
         """ Create a Detrend element.
 
         :param ftype: The ftype of detrending {'linear', 'constant'}.
@@ -18,7 +20,7 @@ class Detrend(Filter):
         :param name: Element's name also known as alias
         """
         super().__init__(name)
-        self.ftype = ftype
+        self.type = type
 
     def process(self, data, extra=None):
         """ Removes the mean value or linear trend from a N-dimensional array.
@@ -27,4 +29,4 @@ class Detrend(Filter):
         :param extra: Dictionary storing any extra information previously computed.
         :return: An array the same size as input containing the median filtered result.
         """
-        return signal.detrend(data=data, axis=0, type=self.ftype), extra
+        return signal.detrend(data=data, axis=0, type=self.type), extra

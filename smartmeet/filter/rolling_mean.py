@@ -1,4 +1,5 @@
 import numpy
+
 from smartmeet.core.filter import Filter
 
 
@@ -6,6 +7,7 @@ class RollingMean(Filter):
     """
     This class perform a mean filter on an N-dimensional array.
     """
+
     def __init__(self, kernel_size: int, name: str = ""):
         """ Create a RollingMean element.
 
@@ -16,9 +18,9 @@ class RollingMean(Filter):
         self.kernel_size = kernel_size
 
     @staticmethod
-    def __running_mean(x, N):
-        cumsum = numpy.cumsum(numpy.insert(x, 0, 0))
-        return (cumsum[N:] - cumsum[:-N]) / float(N)
+    def __running_mean(data, kernel_size):
+        cumsum = numpy.cumsum(numpy.insert(data, 0, 0))
+        return (cumsum[kernel_size:] - cumsum[:-kernel_size]) / float(kernel_size)
 
     def process(self, data, extra=None):
         """ Perform a mean filter on an N-dimensional array.
@@ -29,4 +31,4 @@ class RollingMean(Filter):
         :param extra: Dictionary storing any extra information previously computed.
         :return: An array the same size as input containing the mean filtered result.
         """
-        return RollingMean.__running_mean(x=data, N=self.kernel_size), extra
+        return RollingMean.__running_mean(data=data, kernel_size=self.kernel_size), extra

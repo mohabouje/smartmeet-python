@@ -1,4 +1,5 @@
 from soundfile import SoundFile
+
 from smartmeet.core.source import Source
 
 
@@ -6,6 +7,7 @@ class Decoder(Source):
     """
     This class is an interface to read data from an audio file
     """
+
     def __init__(self, file_name: str, frames_per_buffer: int = None, name: str = ""):
         """ Creates an instance of a Decoder source with the given configuration
 
@@ -40,6 +42,15 @@ class Decoder(Source):
         """ Checks if there still data to read from the audio file """
         return self.__instance.tell() < self.__instance.frames
 
+    def start(self):
+        self.__instance.seek(0)
+
+    def stop(self):
+        self.__instance.seek(self.frames_per_buffer)
+
+    def timestamp(self):
+        return self.__instance.tell() / self.__instance.samplerate
+
     def seek(self, frames):
         """Set the read position.
         :param frames : The frame index or offset to seek.
@@ -53,5 +64,6 @@ class Decoder(Source):
         :param extra: Dictionary storing any extra information previously computed.
         :return: Array storing the samples read from the file
         """
-        return self.__instance.read(frames=self.__frames_per_buffer,
-                                    dtype='float32', always_2d=True)
+        return self.__instance.read(
+                frames=self.__frames_per_buffer, dtype='float32', always_2d=True
+        )

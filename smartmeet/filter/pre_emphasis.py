@@ -1,12 +1,14 @@
-from smartmeet.core.filter import Filter
 from speechpy.processing import preemphasis
+
+from smartmeet.core.filter import Filter
 
 
 class PreEmphasis(Filter):
     """
     This class perform a pre-emphasis filter on an N-dimensional array.
     """
-    def __init__(self, cof: float = 0.99, name: str = ""):
+
+    def __init__(self, cof: float = 0.95, name: str = ""):
         """ Create a MedianFilter element.
 
         :param cof: The pre-emphasising coefficient. 0 equals to no filtering.
