@@ -38,7 +38,7 @@ class VAD(Filter):
         self.__mode = mode
         self.__vad.set_mode(mode)
 
-    def process(self, data, extra) -> tuple:
+    def process(self, data, **kwargs):
         """
         Checks if the given data contains human speech.
         Args:
@@ -48,8 +48,9 @@ class VAD(Filter):
         Returns:
             A tuple with the original data an a boolean representing if the audio data contains speech
             in the dictionary with the key "vad"
+            :param **kwargs:
         """
         mono = np.mean(a=data, axis=0, dtype=np.float32)
         mono = Converter.fromFloat16ToS16(mono)
-        extra["vad"] = self.__vad.is_speech(buf=mono, sample_rate=self.sample_rate, length=data.size())
-        return data, extra
+        mono = Converter.deinterleave(mono)
+        return self.__vad.is_speech(buf=mono, sample_rate=self.sample_rate, length=data.size())
