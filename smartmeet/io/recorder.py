@@ -13,8 +13,12 @@ class Recorder(Source):
     from an input device.
     """
 
-    def __init__(self, rate: int = 16000, frames_per_buffer: int = None, channels: int = 1,
-                 device_name: str = "default", name: str = ""):
+    def __init__(self,
+                 rate: int = 16000,
+                 frames_per_buffer: int = None,
+                 channels: int = 1,
+                 device_name: str = "default",
+                 name: str = ""):
         """ Creates an instance of a Recorder source with the given configuration
 
         :param rate: Sampling rate in Hz
@@ -25,9 +29,7 @@ class Recorder(Source):
         super().__init__(name)
         self.__queue = Queue()
         self.__rate = rate
-        self.__frames_per_buffer = int(
-                frames_per_buffer if frames_per_buffer else rate // 100
-        )
+        self.__frames_per_buffer = int(frames_per_buffer if frames_per_buffer else rate // 100)
         self.__channels = channels
         self.__timestamp = 0
         self.__instance = PyAudio()
@@ -39,24 +41,20 @@ class Recorder(Source):
                 self.__device_index = i
                 break
         else:
-            self.__device_index = self.__instance.get_default_input_device_info(
-            )['index']
+            self.__device_index = self.__instance.get_default_input_device_info()['index']
 
         if self.__device_index is None:
-            raise ValueError(
-                    'Can not find the input device {}'.format(device_name)
-            )
+            raise ValueError('Can not find the input device {}'.format(device_name))
 
         self.__stream = self.__instance.open(
-                start=False,
-                format=paFloat32,
-                input_device_index=self.__device_index,
-                channels=self.__channels,
-                rate=int(self.__rate),
-                frames_per_buffer=int(self.__frames_per_buffer),
-                stream_callback=self.__audio_callback,
-                input=True
-        )
+            start=False,
+            format=paFloat32,
+            input_device_index=self.__device_index,
+            channels=self.__channels,
+            rate=int(self.__rate),
+            frames_per_buffer=int(self.__frames_per_buffer),
+            stream_callback=self.__audio_callback,
+            input=True)
 
     def __decode(self, data):
         """
@@ -88,8 +86,7 @@ class Recorder(Source):
     @property
     def device_name(self):
         """ Return the device name. """
-        return self.__instance.get_device_info_by_index(self.__device_index
-                                                        )["name"]
+        return self.__instance.get_device_info_by_index(self.__device_index)["name"]
 
     @property
     def frames_per_buffer(self) -> int:

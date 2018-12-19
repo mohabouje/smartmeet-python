@@ -15,9 +15,7 @@ class Encoder(Sink):
         :param file_name: Input file name
         """
         super().__init__(name)
-        self.__instance = SoundFile(
-                file=file_name, mode='w', samplerate=rate, channels=channels
-        )
+        self.__instance = SoundFile(file=file_name, mode='w', samplerate=rate, channels=channels)
 
     @property
     def sample_rate(self) -> int:

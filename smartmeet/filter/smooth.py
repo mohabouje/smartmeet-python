@@ -56,5 +56,4 @@ class Smooth(Filter):
         :param extra: Dictionary storing any extra information previously computed.
         :return: An array the same size as input containing the filtered result.
         """
-        return signal.savgol_filter(data, window_length=self.kernel_size, polyorder=self.polyorder, mode=self.mode,
-                                    axis=1), extra
+        return signal.savgol_filter(data, window_length=self.kernel_size, polyorder=self.polyorder, mode=self.mode, axis=1), extra

@@ -5,7 +5,6 @@ from singleton_decorator import singleton
 
 @singleton
 class Logger:
-
     def __init__(self):
         self.__level = logging.DEBUG
         self.__loggers = dict()

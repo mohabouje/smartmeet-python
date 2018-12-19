@@ -65,5 +65,4 @@ class Decoder(Source):
         :return: Array storing the samples read from the file
         """
         return self.__instance.read(
-                frames=self.__frames_per_buffer, dtype='float32', always_2d=True
-        )
+            frames=self.__frames_per_buffer, dtype='float32', always_2d=True)

@@ -28,9 +28,7 @@ class Pipeline:
         if not issubclass(type(element), Element):
             raise TypeError("Only Elements can be part of a pipeline")
         if not self.__elements and not issubclass(type(element), Source):
-            raise TypeError(
-                    "The first component of a pipeline must be a Source element"
-            )
+            raise TypeError("The first component of a pipeline must be a Source element")
         if self.__elements and issubclass(type(element), Source):
             raise RuntimeError("A pipeline must have only one single source")
         if element in self.__elements:

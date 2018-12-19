@@ -6,13 +6,11 @@ from singleton_decorator import singleton
 
 
 class ProfilerReport:
-
     def __init__(self, label: str):
         self.__measures = np.zeros(
-                shape=[
-                    1,
-                ], dtype=np.float64
-        )
+            shape=[
+                1,
+            ], dtype=np.float64)
         self.__label = label
 
     @property
@@ -44,7 +42,6 @@ class ProfilerReport:
 
 @singleton
 class Profiler:
-
     def __init__(self):
         self.__entries = dict()
 
@@ -58,13 +55,7 @@ class Profiler:
         self.__get_profiler(label=label).profile(func=func, args=args, kw=kw)
 
     def print(self):
-        for profiler in sorted(
-                self.__entries.items(), key=operator.itemgetter(1)
-        ):
+        for profiler in sorted(self.__entries.items(), key=operator.itemgetter(1)):
             print(
-                    "Label: %s \t Total: %f \t Average: %f \t Worst: %f \t Best: %f "
-                    % (
-                        profiler.label, profiler.total, profiler.average,
-                        profiler.worst, profiler.best
-                    )
-            )
+                "Label: %s \t Total: %f \t Average: %f \t Worst: %f \t Best: %f " %
+                (profiler.label, profiler.total, profiler.average, profiler.worst, profiler.best))
