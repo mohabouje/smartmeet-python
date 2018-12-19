@@ -47,7 +47,7 @@ class Smooth(Filter):
         self.polyorder = polyorder
         self.kernel_size = kernel_size
 
-    def process(self, data, extra=None):
+    def process(self, data, extra=None) -> tuple:
         """ Perform a smoothing filter on an N-dimensional array.
 
         Apply a smoothing filter to the input array using a local window-size given by `kernel_size`

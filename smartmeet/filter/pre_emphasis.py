@@ -17,7 +17,7 @@ class PreEmphasis(Filter):
         super().__init__(name)
         self.cof = cof
 
-    def process(self, data, extra=None):
+    def process(self, data, extra=None) -> tuple:
         """ Perform a pre-emphasis filter on an N-dimensional array.
 
         Apply a pre-emphasis filter to the input array using a local window-size given by `kernel_size`

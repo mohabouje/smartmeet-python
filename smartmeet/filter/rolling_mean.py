@@ -22,7 +22,7 @@ class RollingMean(Filter):
         cumsum = numpy.cumsum(numpy.insert(data, 0, 0))
         return (cumsum[kernel_size:] - cumsum[:-kernel_size]) / float(kernel_size)
 
-    def process(self, data, extra=None):
+    def process(self, data, extra=None) -> tuple:
         """ Perform a mean filter on an N-dimensional array.
 
         Apply a mean filter to the input array using a local window-size given by `kernel_size`

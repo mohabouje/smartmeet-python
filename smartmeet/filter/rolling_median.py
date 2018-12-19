@@ -17,7 +17,7 @@ class RollingMedian(Filter):
         super().__init__(name)
         self.kernel_size = kernel_size
 
-    def process(self, data, extra=None):
+    def process(self, data, extra=None) -> tuple:
         """ Perform a median filter on an N-dimensional array.
 
         Apply a median filter to the input array using a local window-size given by `kernel_size`

@@ -24,21 +24,21 @@ class Decoder(Source):
         return self.__instance.samplerate
 
     @property
-    def channels(self):
+    def channels(self) -> int:
         """ Return the number of channels. """
         return self.__instance.channels
 
     @property
-    def file_name(self):
+    def file_name(self) -> str:
         """ Return the file name. """
         return self.__instance.name
 
     @property
-    def frames_per_buffer(self):
+    def frames_per_buffer(self) -> int:
         """ Returns the number of frames per channel"""
         return self.__frames_per_buffer
 
-    def done(self):
+    def done(self) -> bool:
         """ Checks if there still data to read from the audio file """
         return self.__instance.tell() < self.__instance.frames
 

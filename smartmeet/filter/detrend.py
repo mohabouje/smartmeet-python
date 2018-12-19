@@ -22,7 +22,7 @@ class Detrend(Filter):
         super().__init__(name)
         self.type = type
 
-    def process(self, data, extra=None):
+    def process(self, data, extra=None) -> tuple:
         """ Removes the mean value or linear trend from a N-dimensional array.
 
         :param data: An array containing the data

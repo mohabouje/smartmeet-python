@@ -33,7 +33,7 @@ class Logger:
         return self.level
 
     @level.setter
-    def level(self, level):
+    def level(self, level: int):
         self.__level = level
         for logger in self.__loggers:
             logger.setLevel(level)

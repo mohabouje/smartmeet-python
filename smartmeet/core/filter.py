@@ -21,14 +21,14 @@ class Filter(Sink):
         self.__sinks = []
 
     @abstractmethod
-    def process(self, data, extra):
+    def process(self, data, extra) -> tuple:
         """ Process a chunk of data
 
         :param data: Input data, generally a numpy array storing audio samples
         :param extra: Dictionary with any extra information
         """
 
-    def link(self, sink):
+    def link(self, sink: Sink):
         """ Links the given Element
 
         This function is only applicable for producer-like elements. When an external element is linked, It will be
@@ -40,7 +40,7 @@ class Filter(Sink):
             raise TypeError("Only Sink objects can be linked")
         self.__sinks.append(sink)
 
-    def unlink(self, sink):
+    def unlink(self, sink: Sink):
         """ Un-links the given Element
 
         This function is only applicable for producer-like elements. When an external element is un-linked, It won't be

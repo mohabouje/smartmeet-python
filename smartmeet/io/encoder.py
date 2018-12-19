@@ -23,12 +23,12 @@ class Encoder(Sink):
         return self.__instance.samplerate
 
     @property
-    def channels(self):
+    def channels(self) -> int:
         """ Return the number of channels. """
         return self.__instance.channels
 
     @property
-    def file_name(self):
+    def file_name(self) -> str:
         """ Return the file name. """
         return self.__instance.name
 
@@ -39,8 +39,8 @@ class Encoder(Sink):
         """
         return self.__instance.seek(frames=frames)
 
-    def process(self, data, extra):
+    def process(self, data, extra=None):
         """ Writes the buffer of data into the audio file.
         :return: An array the same size as the input
         """
-        self.__instance.write(data.flatten())
+        self.__instance.write(data.flatten()), extra

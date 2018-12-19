@@ -79,12 +79,12 @@ class Recorder(Source):
         return self.__rate
 
     @property
-    def channels(self):
+    def channels(self) -> int:
         """ Return the number of channels. """
         return self.__channels
 
     @property
-    def device_name(self):
+    def device_name(self) -> str:
         """ Return the device name. """
         return self.__instance.get_device_info_by_index(self.__device_index)["name"]
 
@@ -93,7 +93,7 @@ class Recorder(Source):
         """ Returns the number of frames per channel"""
         return self.__frames_per_buffer
 
-    def done(self):
+    def done(self) -> bool:
         """ Checks if the stream is currently active """
         return self.__stream.is_stopped()
 
@@ -105,7 +105,8 @@ class Recorder(Source):
         """ Stops the audio streaming """
         self.__stream.stop_stream()
 
-    def timestamp(self):
+    def timestamp(self) -> float:
+        """ Returns the streaming timestamp in seconds """
         return self.__timestamp
 
     def process(self):
@@ -119,4 +120,4 @@ class Recorder(Source):
         while (self.__queue.empty()):
             time.sleep(self.frames_per_buffer / self.sample_rate)
 
-        return self.__queue.get(), dict()
+        return self.__queue.get()
