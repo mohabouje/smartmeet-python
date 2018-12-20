@@ -1,4 +1,4 @@
-from numpy import ndarray
+import numpy as np
 from smartmeet.utils.converter import Converter
 from profilehooks import profile
 from webrtc_audio_processing import AudioProcessingModule as AP
@@ -57,7 +57,7 @@ class NoiseSuppressor:
         self.__ap.set_ns_level(level)
 
     @profile
-    def process(self, data : ndarray) -> ndarray:
+    def process(self, data : np.ndarray) -> np.ndarray:
         """Applies a de-noising filter to the input data
 
         Args:
@@ -78,6 +78,5 @@ class NoiseSuppressor:
         fixed = Converter.fromFloat16ToS16(data)
         fixed = Converter.interleave(fixed)
         fixed = self.__ap.process_stream(fixed)
-        floating = Converter.fromS16ToFloat16(fixed)
-        floating = Converter.deinterleave(data=floating, channels=self.channels, frames_per_buffer=self.__frames_per_channel)
-        return floating
+        fixed = Converter.deinterleave(data=fixed, channels=self.channels, frames_per_buffer=self.__frames_per_channel, dtype=np.int16)
+        return Converter.fromS16ToFloat16(fixed)

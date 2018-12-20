@@ -1,15 +1,14 @@
 import numpy as np
 
 
-
 class Converter:
 
     @staticmethod
-    def interleave(data):
+    def interleave(data: np.ndarray):
         return data.flatten()
 
     @staticmethod
-    def deinterleave(data, frames_per_buffer: int, channels: int, dtype):
+    def deinterleave(data, frames_per_buffer: int, channels: int, dtype) -> np.ndarray:
         """Convert a byte stream into a 2D numpy array with shape (chunk_size,
         channels)
 
@@ -27,11 +26,11 @@ class Converter:
         return np.reshape(result, (frames_per_buffer, channels))
 
     @staticmethod
-    def fromFloat16ToS16(data):
+    def fromFloat16ToS16(data: np.ndarray) -> np.ndarray:
         data[data > np.info(np.int16).max] = np.info(np.int16).max
         data[data < np.info(np.int16).min] = np.info(np.int16).min
         return data.astype(dtype=np.int16)
 
     @staticmethod
-    def fromS16ToFloat16(data):
+    def fromS16ToFloat16(data: np.ndarray) -> np.ndarray:
         return data.astype(dtype=np.float32)
