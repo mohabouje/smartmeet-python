@@ -76,5 +76,8 @@ class NoiseSuppressor:
             raise ValueError("Invalid shape. Expected (%d, %d)" % (self.channels, self.__frames_per_channel))
 
         fixed = Converter.fromFloat16ToS16(data)
+        fixed = Converter.interleave(fixed)
         fixed = self.__ap.process_stream(fixed)
-        return Converter.fromS16ToFloat16(fixed)
+        floating = Converter.fromS16ToFloat16(fixed)
+        floating = Converter.deinterleave(data=floating, channels=self.channels, frames_per_buffer=self.__frames_per_channel)
+        return floating

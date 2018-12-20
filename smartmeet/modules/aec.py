@@ -1,12 +1,10 @@
 import numpy as np
 from speexdsp import EchoCanceller
-from smartmeet.core.filter import Filter
 from smartmeet.utils.converter import Converter
 
+class AEC:
 
-class AEC(Filter):
-
-    def __init__(self, channels: int, rate: int, frames_per_channel: int, filter_length: int, name: str = ""):
+    def __init__(self, channels: int, rate: int, frames_per_channel: int, filter_length: int):
         super().__init__(name=name)
         self.__channels = channels
         self.__rate = rate
@@ -27,29 +25,30 @@ class AEC(Filter):
         return self.__channels
 
 
-    def process(self, data, playback):
+    def process(self, data: np.ndarray, playback: np.ndarray) -> np.ndarray:
         """
         Removes the influence of the playback data from the recorded
         Args:
             data: An array containing the data
-            extra: Dictionary storing any extra information previously computed.
+            playback: An array storing the played data
 
         Returns:
-            A tuple with the filtered data
+            An array storing the final results
         """
 
-        if data.shape() != [self.channels, self.__frames_per_channel]:
+        if data.shape != [self.__frames_per_channel, self.channels]:
             raise ValueError("Invalid shape. Expected (%d, %d)" % (self.channels, self.__frames_per_channel))
 
 
         mono_playback = np.mean(a=playback, axis=0, dtype=np.float32)
         mono_playback = Converter.fromFloat16ToS16(mono_playback)
 
+        output = np.zeros(shape=[self.__frames_per_channel, self.channels], dtype=np.float32)
         for i in range(self.__channels):
             temp = Converter.fromFloat16ToS16(data[i][:])
             temp = Converter.interleave(temp)
             temp = self.__aec[i].process_stream(temp, mono_playback)
             floating = Converter.deinterleave(temp, channels=1, frames_per_buffer=self.__frames_per_channel)
             floating = Converter.fromS16ToFloat16(floating)
-            data[i][:] = floating
-        return data
+            output[i][:] = floating
+        return output
