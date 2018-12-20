@@ -1,9 +1,8 @@
 from scipy import signal
+from numpy import ndarray
+from profilehooks import profile
 
-from smartmeet.core.filter import Filter
-
-
-class Detrend(Filter):
+class Detrend:
     """This class removes the mean value or linear trend from a N-dimensional
     array, usually for FFT processing.
 
@@ -12,30 +11,27 @@ class Detrend(Filter):
     resulting function from the data.
     """
 
-    def __init__(self, type: str = "linear", name: str = ""):
+    def __init__(self, type: str = "linear"):
         """Create a Detrend element.
 
         If ``ftype == 'linear'`` (default), the result of a linear
         least-squares fit to `data` is subtracted from `data` . If
-        ``ftype == 'constant'``, only the mean of `data` is subtracted. :param
-        name: Element's name also known as alias
+        ``ftype == 'constant'``, only the mean of `data` is subtracted.
 
         Args:
             type (str):
-            name (str):
         """
-        super().__init__(name)
         self.type = type
 
-    def process(self, data, extra=None) -> tuple:
+    @profile
+    def process(self, data : ndarray) -> ndarray:
         """Removes the mean value or linear trend from a N-dimensional array.
 
         Args:
-            data: An array containing the data
-            extra: Dictionary storing any extra information previously computed.
+            data (ndarray): An array containing the data
 
         Returns:
             An array the same size as input containing the median filtered
             result.
         """
-        return signal.detrend(data=data, axis=0, type=self.type), extra
+        return signal.detrend(data=data, axis=0, type=self.type)

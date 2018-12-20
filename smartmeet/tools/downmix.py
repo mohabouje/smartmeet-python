@@ -1,17 +1,16 @@
 import numpy as np
-from smartmeet.core.filter import Filter
 
+class DownMix:
+    """Converts a multi-channels data to mono"""
+    def process(self, data: np.ndarray) -> np.ndarray:
+        """Converts the multi-channel data into a mono signal :param data: N-D
+        array representing the multi-channel audio data :param extra: Any
+        information previously computed
 
-class DownMix(Filter):
-    """ Converts a multi-channels data to mono
-    """
-    def process(self, data, extra) -> tuple:
-        """ Converts the multi-channel data into a mono signal
         Args:
-            data: N-D array representing the multi-channel audio data
-            extra: Any information previously computed
+            data (np.ndarray): Multi-Channel array to be down mixed. Expected shape: [Samples per channel, Channels]
 
         Returns:
             Mono version (average) of the original data.
         """
-        return np.mean(a=data, axis=0, dtype=np.float32), extra
+        return np.mean(a=data, axis=0, dtype=np.float32)

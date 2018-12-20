@@ -1,9 +1,7 @@
 import time
-from queue import Queue
-
+import queue
 import numpy
-from pyaudio import PyAudio, paContinue, paFloat32
-
+import pyaudio
 from smartmeet.core.source import Source
 
 
@@ -25,15 +23,14 @@ class Recorder(Source):
             frames_per_buffer (int): Number of frames per buffer.
             channels (int): Number of channels
             device_name (str): Input device name
-            name (str):
         """
         super().__init__(name)
-        self.__queue = Queue()
+        self.__queue = queue.Queue()
         self.__rate = rate
         self.__frames_per_buffer = int(frames_per_buffer if frames_per_buffer else rate // 100)
         self.__channels = channels
         self.__timestamp = 0
-        self.__instance = PyAudio()
+        self.__instance = pyaudio.PyAudio()
 
         for i in range(self.__instance.get_device_count()):
             dev = self.__instance.get_device_info_by_index(i)
@@ -49,7 +46,7 @@ class Recorder(Source):
 
         self.__stream = self.__instance.open(
             start=False,
-            format=paFloat32,
+            format=pyaudio.paFloat32,
             input_device_index=self.__device_index,
             channels=self.__channels,
             rate=int(self.__rate),
@@ -81,7 +78,7 @@ class Recorder(Source):
         """
         self.__queue.put(self.__decode(data=in_data))
         self.__timestamp = time_info["current_time"]
-        return None, paContinue
+        return None, pyaudio.paContinue
 
     @property
     def sample_rate(self) -> int:

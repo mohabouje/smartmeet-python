@@ -1,20 +1,17 @@
 import numpy
+from profilehooks import profile
 
-from smartmeet.core.filter import Filter
 
-
-class RollingMean(Filter):
+class RollingMean:
     """This class perform a mean filter on an N-dimensional array."""
 
-    def __init__(self, kernel_size: int, name: str = ""):
+    def __init__(self, kernel_size: int):
         """Create a RollingMean element.
 
         Args:
             kernel_size (int): A scalar or an N-length list giving the size of
                 the mean filter window in each dimension.
-            name (str): Element's name also known as alias
         """
-        super().__init__(name)
         self.kernel_size = kernel_size
 
     @staticmethod
@@ -27,17 +24,17 @@ class RollingMean(Filter):
         cumsum = numpy.cumsum(numpy.insert(data, 0, 0))
         return (cumsum[kernel_size:] - cumsum[:-kernel_size]) / float(kernel_size)
 
-    def process(self, data, extra=None) -> tuple:
+    @profile
+    def process(self, data: numpy.ndarray) -> numpy.ndarray:
         """Perform a mean filter on an N-dimensional array.
 
         Apply a mean filter to the input array using a local window-size
         given by `kernel_size`
 
         Args:
-            data: An array containing the data
-            extra: Dictionary storing any extra information previously computed.
+            data (numpy.ndarray): An array containing the data
 
         Returns:
             An array the same size as input containing the mean filtered result.
         """
-        return RollingMean.__running_mean(data=data, kernel_size=self.kernel_size), extra
+        return RollingMean.__running_mean(data=data, kernel_size=self.kernel_size)

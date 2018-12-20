@@ -1,9 +1,7 @@
 from scipy import signal
+from numpy import ndarray
 
-from smartmeet.core.filter import Filter
-
-
-class Resample(Filter):
+class Resample:
     """This class resamples N-dimensional array.
 
     The input signal is up-sampled by the factor `up` , a zero-phase low-pass
@@ -13,26 +11,23 @@ class Resample(Filter):
     filtering step.
     """
 
-    def __init__(self, up: int, down: int, name: str = ""):
+    def __init__(self, up: int, down: int):
         """Create a Resample element.
 
         Args:
             up (int): The up-sampling factor.
             down (int): The down sampling factor.
-            name (str):
         """
-        super().__init__(name)
         self.up = up
         self.down = down
 
-    def process(self, data, extra=None):
+    def process(self, data: ndarray) -> ndarray:
         """Resample the input data using polyphase filtering.
 
         Args:
-            data: An array containing the data
-            extra: Dictionary storing any extra information previously computed.
+            data (ndarray): An array containing the data
 
         Returns:
             An array containing the resampled signal.
         """
-        return signal.resample_poly(x=data, up=self.up, down=self.down), extra
+        return signal.resample_poly(x=data, up=self.up, down=self.down)
