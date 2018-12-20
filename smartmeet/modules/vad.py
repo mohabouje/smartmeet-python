@@ -93,6 +93,9 @@ class VAD:
         """
         mono = np.mean(a=data, axis=0, dtype=np.float32)
         mono = Converter.fromFloat16ToS16(mono)
+        mono = Converter.deinterleave(mono)
+        return self.__vad.is_speech(buf=mono, sample_rate=self.sample_rate, length=data.size())
+
         result = self.__vad.is_speech(buf=mono, sample_rate=self.sample_rate, length=mono.size())
         if (result < 0):
             raise RuntimeError("Invalid frame length. Only frames with a length of 10, 20 or 30 ms are supported.")
