@@ -5,7 +5,7 @@ class Converter:
 
     @staticmethod
     def interleave(data: np.ndarray):
-        return data.flatten()
+        return data.tobytes()
 
     @staticmethod
     def deinterleave(data, frames_per_buffer: int, channels: int, dtype) -> np.ndarray:
@@ -22,7 +22,7 @@ class Converter:
             channels:
             dtype:
         """
-        result = np.fromstring(string=data, dtype=dtype)
+        result = np.frombuffer(buffer=data, dtype=dtype)
         return np.reshape(result, (frames_per_buffer, channels))
 
     @staticmethod

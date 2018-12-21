@@ -24,6 +24,7 @@ class NoiseSuppressor:
         self.__rate = rate
         self.__frames_per_channel = int(rate * 0.01)
         self.__ap = AP(enable_ns=True)
+        self.__ap.set_ns_level(level)
         self.__ap.set_stream_format(rate, channels)
 
     @property
@@ -78,7 +79,10 @@ class NoiseSuppressor:
         if data.ndim == 1 and data.size != self.__frames_per_channel:
             raise ValueError("Invalid length. Expected %d samples" % self.__frames_per_channel)
 
-        fixed = Converter.fromFloatS16(np.typeinfo(np.int16).max * data)
-        fixed = self.__ap.process_stream(stream=fixed.tostring())
-        fixed = Converter.deinterleave(data=fixed, channels=self.channels, frames_per_buffer=self.__frames_per_channel, dtype=np.int16)
-        return Converter.fromInt16ToFloat(fixed)
+        fixed = Converter.fromFloatToInt16(data)
+        fixed = bytearray(fixed.tostring())
+        #fixed = self.__ap.process_stream(stream=fixed)
+        print(type(fixed), len(fixed))
+        return fixed
+        #fixed = Converter.deinterleave(data=fixed, dtype=np.int16, channels=self.channels, frames_per_buffer=self.__frames_per_channel)
+        #return Converter.fromInt16ToFloat(fixed)
