@@ -26,11 +26,17 @@ class Converter:
         return np.reshape(result, (frames_per_buffer, channels))
 
     @staticmethod
-    def fromFloat16ToS16(data: np.ndarray) -> np.ndarray:
-        data[data > np.info(np.int16).max] = np.info(np.int16).max
-        data[data < np.info(np.int16).min] = np.info(np.int16).min
-        return data.astype(dtype=np.int16)
+    def fromFloatToInt16(data: np.ndarray) -> np.ndarray:
+        temp = data.copy()
+        temp[temp > 1.0] = 1.0
+        temp[temp < -1.0] = -1.0
+        temp[temp < 0] *= abs(np.iinfo(np.int16).min)
+        temp[temp > 0] *= abs(np.iinfo(np.int16).max)
+        return temp.astype(dtype=np.int16)
 
     @staticmethod
-    def fromS16ToFloat16(data: np.ndarray) -> np.ndarray:
-        return data.astype(dtype=np.float32)
+    def fromInt16ToFloat(data: np.ndarray) -> np.ndarray:
+        temp = data.astype(dtype=np.float32)
+        temp[temp < 0] /= float(abs(np.iinfo(np.int16).min))
+        temp[temp > 0] /= float(abs(np.iinfo(np.int16).max))
+        return temp

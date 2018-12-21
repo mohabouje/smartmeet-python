@@ -41,13 +41,13 @@ class AEC:
 
 
         mono_playback = np.mean(a=playback, axis=0, dtype=np.float32)
-        mono_playback = Converter.fromFloat16ToS16(mono_playback)
+        mono_playback = Converter.fromFloatToInt16(mono_playback)
 
         output = np.zeros(shape=[self.__frames_per_channel, self.channels], dtype=np.float32)
         for i in range(self.__channels):
-            fixed = Converter.fromFloat16ToS16(data[i][:])
+            fixed = Converter.fromFloatToInt16(data[i][:])
             fixed = Converter.interleave(fixed)
             fixed = self.__aec[i].process_stream(fixed, mono_playback)
             fixed = Converter.deinterleave(data=fixed, channels=1, frames_per_buffer=self.__frames_per_channel, dtype=np.int16)
-            output[i][:] = Converter.fromS16ToFloat16(fixed)
+            output[i][:] = Converter.fromInt16ToFloat(fixed)
         return output

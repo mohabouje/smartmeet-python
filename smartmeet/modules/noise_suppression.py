@@ -72,11 +72,13 @@ class NoiseSuppressor:
             8KHz, the processing function is expecting an numpy.ndarray of shape
             [0.01 * SampleRate, Channels] = [80, 2]
         """
-        if data.shape != [self.__frames_per_channel, self.channels]:
-            raise ValueError("Invalid shape. Expected (%d, %d)" % (self.channels, self.__frames_per_channel))
+        if data.ndim > 1 and data.shape != [self.__frames_per_channel, self.channels]:
+            raise ValueError("Invalid shape. Expected (%d, %d)" % (self.__frames_per_channel, self.channels))
 
-        fixed = Converter.fromFloat16ToS16(data)
-        fixed = Converter.interleave(fixed)
-        fixed = self.__ap.process_stream(fixed)
+        if data.ndim == 1 and data.size != self.__frames_per_channel:
+            raise ValueError("Invalid length. Expected %d samples" % self.__frames_per_channel)
+
+        fixed = Converter.fromFloatS16(np.typeinfo(np.int16).max * data)
+        fixed = self.__ap.process_stream(stream=fixed.tostring())
         fixed = Converter.deinterleave(data=fixed, channels=self.channels, frames_per_buffer=self.__frames_per_channel, dtype=np.int16)
-        return Converter.fromS16ToFloat16(fixed)
+        return Converter.fromInt16ToFloat(fixed)

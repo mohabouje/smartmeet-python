@@ -34,4 +34,4 @@ class Detrend:
             An array the same size as input containing the median filtered
             result.
         """
-        return signal.detrend(data=data, axis=0, type=self.type)
+        return signal.detrend(data=data, type=self.type)

@@ -1,12 +1,9 @@
 from soundfile import SoundFile
 
-from smartmeet.core.source import Source
-
-
-class Decoder(Source):
+class Decoder:
     """This class is an interface to read data from an audio file"""
 
-    def __init__(self, file_name: str, frames_per_buffer: int = None, name: str = ""):
+    def __init__(self, file: str):
         """Creates an instance of a Decoder source with the given configuration
 
         Args:
@@ -14,9 +11,7 @@ class Decoder(Source):
             frames_per_buffer (int): Number of frames per buffer.
             name (str): Name of the element
         """
-        super().__init__(name)
-        self.__instance = SoundFile(file=file_name, mode='r')
-        self.__frames_per_buffer = frames_per_buffer if frames_per_buffer else self.sample_rate / 100
+        self.__instance = SoundFile(file=file, mode='r')
 
     @property
     def sample_rate(self) -> int:
@@ -34,9 +29,9 @@ class Decoder(Source):
         return self.__instance.name
 
     @property
-    def frames_per_buffer(self) -> int:
-        """Returns the number of frames per channel"""
-        return self.__frames_per_buffer
+    def frames(self) -> int:
+        """ Number of available frames"""
+        return self.__instance.frames
 
     def done(self) -> bool:
         """Checks if there still data to read from the audio file"""
@@ -48,7 +43,7 @@ class Decoder(Source):
 
     def stop(self):
         """Stops the streaming by seeking the file to the end"""
-        self.__instance.seek(self.frames_per_buffer)
+        self.__instance.seek(self.__instance.frames)
 
     def timestamp(self):
         """Returns the current streaming timestamp in seconds"""
@@ -65,7 +60,10 @@ class Decoder(Source):
         """
         return self.__instance.seek(frames=frames)
 
-    def process(self):
+    def read(self, frames_per_channel: int = -1):
         """Returns the buffer read from the audio file"""
-        return self.__instance.read(
-            frames=self.__frames_per_buffer, dtype='float32', always_2d=True)
+
+        if frames_per_channel is -1:
+            frames_per_channel = self.__instance.frames
+
+        return self.__instance.read(frames=frames_per_channel, dtype='float32', always_2d=False)
